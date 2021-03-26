@@ -19,4 +19,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('mahasiswa/cari/',[MahasiswaController::class, 'search']);
 Route::resource('mahasiswa',MahasiswaController::class);

@@ -15,10 +15,13 @@ class MahasiswaController extends Controller
     public function index()
     {
         //
-        $mahasiswa = Mahasiswa::all(); // Mengambil semua isi tabel
-        $posts = Mahasiswa::orderBy('id', 'desc')->paginate(6);
-        return view('mahasiswa.index', compact('mahasiswa'));
-        with('i', (request()->input('page', 1) - 1) * 5);
+        // $mahasiswa = Mahasiswa::all(); // Mengambil semua isi tabel
+        // $posts = Mahasiswa::orderBy('id', 'desc')->paginate(6);
+        // return view('mahasiswa.index', compact('mahasiswa'));
+        // with('i', (request()->input('page', 1) - 1) * 5);
+
+        $mahasiswa = Mahasiswa::paginate(5);
+        return view('mahasiswa.index',['mahasiswa'=>$mahasiswa]);
     }
 
     /**
@@ -44,7 +47,7 @@ class MahasiswaController extends Controller
         // return "Proses Simpan ke database";
 
         $request->validate([
-            'nim' => 'required',
+            'id' => 'required',
             'nama' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',
@@ -135,5 +138,16 @@ class MahasiswaController extends Controller
         return redirect()->route('mahasiswa.index')
             -> with('success', 'Mahasiswa Berhasil Dihapus');
 
+    }
+
+    public function search(Request $request) {
+        $mahasiswa = Mahasiswa::when($request->keyword, function ($query) use ($request){
+        $query->where('id', 'like', "%{$request->keyword}%")
+                ->orWhere('nama', 'like', "%{$request->keyword}%") 
+                ->orWhere('kelas', 'like', "%{$request->keyword}%")
+                ->orWhere('jurusan', 'like', "%{$request->keyword}%");
+        })->paginate(5);
+        $mahasiswa->appends($request->only('keyword')); 
+        return view('mahasiswa.index', compact( 'mahasiswa'));
     }
 }
