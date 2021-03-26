@@ -105,7 +105,7 @@ class MahasiswaController extends Controller
         // return "Proses udpate data ke database";
 
         $request->validate([
-            'nim' => 'required',
+            'id' => 'required',
             'nama' => 'required',
             'kelas' => 'required',
             'jurusan' => 'required',

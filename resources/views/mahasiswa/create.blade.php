@@ -23,7 +23,7 @@
             <form method="post" action="{{ route('mahasiswa.store') }}" id="myForm">
             @csrf
                 <div class="form-group">
-                    <label for="id">Id</label>                    
+                    <label for="id">NIM</label>                    
                     <input type="text" name="id" class="form-control" id="id" aria-describedby="id" >                
                 </div>
                 <div class="form-group">
